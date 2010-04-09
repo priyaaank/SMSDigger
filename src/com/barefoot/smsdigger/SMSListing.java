@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Map;
 
 import android.app.ListActivity;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -58,8 +59,12 @@ public class SMSListing extends ListActivity implements SMSConstants {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//Passing this because if I extract application context, then it's running too fast and before it is actually created. 
 		//Hence null was being passed in
-		SMSView newSMS = new SMSView(getSelectedMessage(position), this, senderNameOrNumberFor(position));
+		SMSView newSMS = new SMSView(getSelectedMessage(position), this, senderNameOrNumberFor(position), bitmapImage(position));
 		newSMS.dialog().show();
+	}
+
+	private Bitmap bitmapImage(int position) {
+		return contactDetails(position).getContactPhoto();
 	}
 
 	private String getSelectedMessage(int position) {

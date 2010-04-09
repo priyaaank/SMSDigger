@@ -4,10 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import android.app.Activity;
-import android.database.Cursor;
-import android.net.Uri;
-import android.provider.Contacts;
-import android.provider.Contacts.Phones;
 
 import com.google.gson.Gson;
 
@@ -23,6 +19,8 @@ public class SMSHolder {
 	private String contactId;
 	
 	private String score;
+	
+	private ContactInfo contactInfo;
 	
 	public SMSHolder(String id, String message, String sender, String contactId, String score) {
 		this.id = id;
@@ -104,6 +102,10 @@ public class SMSHolder {
 	}
 	
 	public ContactInfo getContactDetails(Activity activity) {
-		return new ContactDetails(activity.getContentResolver()).getContactInfoFrom(sender);
+		
+		if (contactInfo == null) {
+			contactInfo = new ContactDetails(activity.getContentResolver()).getContactInfoFrom(sender);
+		}
+		return contactInfo;
 	}
 }
