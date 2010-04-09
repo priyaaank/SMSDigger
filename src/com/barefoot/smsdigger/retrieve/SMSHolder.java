@@ -3,6 +3,12 @@ package com.barefoot.smsdigger.retrieve;
 import java.util.HashMap;
 import java.util.Map;
 
+import android.app.Activity;
+import android.database.Cursor;
+import android.net.Uri;
+import android.provider.Contacts;
+import android.provider.Contacts.Phones;
+
 import com.google.gson.Gson;
 
 
@@ -95,5 +101,9 @@ public class SMSHolder {
 		String contact = null == fromJson.get("contact") ? null : (String)fromJson.get("contact");
 		
 		return new SMSHolder(id, msg, sender, contact, score);
+	}
+	
+	public ContactInfo getContactDetails(Activity activity) {
+		return new ContactDetails(activity.getContentResolver()).getContactInfoFrom(sender);
 	}
 }

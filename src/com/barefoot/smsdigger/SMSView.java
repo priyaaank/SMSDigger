@@ -11,14 +11,14 @@ public class SMSView implements SMSConstants {
 	Context applicationContext;
 	Dialog customDialog;
 	
-	public SMSView(String message, Context applicationContext) {
-		this(message, R.drawable.icon, applicationContext);
+	public SMSView(String message, Context applicationContext, String smsTitle) {
+		this(message, R.drawable.icon, applicationContext, smsTitle);
 	}
 	
-	public SMSView(String message, int imagePath, Context applicationContext) {
+	public SMSView(String message, int imagePath, Context applicationContext, String smsTitle) {
 		customDialog = new Dialog(applicationContext);
 		customDialog.setContentView(R.layout.smsview);
-		customDialog.setTitle(SMS_TITLE);
+		customDialog.setTitle(smsTitle);
 		
 		TextView text = (TextView) customDialog.findViewById(R.id.smsText);
 		text.setText(message);

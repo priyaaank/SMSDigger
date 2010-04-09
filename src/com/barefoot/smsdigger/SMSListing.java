@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.barefoot.smsdigger.retrieve.ContactInfo;
 import com.barefoot.smsdigger.retrieve.SMSHolder;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -57,11 +58,19 @@ public class SMSListing extends ListActivity implements SMSConstants {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		//Passing this because if I extract application context, then it's running too fast and before it is actually created. 
 		//Hence null was being passed in
-		SMSView newSMS = new SMSView(getSelectedMessage(position), this);
+		SMSView newSMS = new SMSView(getSelectedMessage(position), this, senderNameOrNumberFor(position));
 		newSMS.dialog().show();
 	}
 
 	private String getSelectedMessage(int position) {
 		return messages.get(position).getMessage();
+	}
+	
+	private String senderNameOrNumberFor(int messagePosition) {
+		return contactDetails(messagePosition).getContactName();
+	}
+	
+	private ContactInfo contactDetails(int position) {
+		return messages.get(position).getContactDetails(this);
 	}
 }
