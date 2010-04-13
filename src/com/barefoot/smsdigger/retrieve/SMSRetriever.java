@@ -55,7 +55,7 @@ public class SMSRetriever {
 			messages = contentResolver.query(getContentURI(), fieldsToFetch(),
 					whereClause(), selectionArguments(), sortOrder());
 
-			if (messages.moveToFirst()) {
+			if (messages != null && messages.moveToFirst()) {
 				return extractFieldsFrom(messages);
 			}
 		} finally {

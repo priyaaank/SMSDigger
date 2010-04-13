@@ -8,7 +8,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.provider.Contacts;
-import android.provider.ContactsContract;
 import android.provider.Contacts.Photos;
 
 public class ContactDetails {
@@ -21,15 +20,15 @@ public class ContactDetails {
 
 	public ContactInfo getContactInfoFrom(String phoneNumber) {
 		Uri phoneUri = Uri.withAppendedPath(
-				ContactsContract.PhoneLookup.CONTENT_FILTER_URI, Uri
+				Contacts.Phones.CONTENT_FILTER_URL, Uri
 						.encode(phoneNumber));
 		if (phoneUri != null) {
 			Cursor phoneCursor = null;
 			try {
 				phoneCursor = contentResolver.query(phoneUri, new String[] {
-						ContactsContract.PhoneLookup._ID,
-						ContactsContract.PhoneLookup.PHOTO_ID,
-						ContactsContract.PhoneLookup.DISPLAY_NAME }, null, null,
+						Contacts.Phones._ID,
+						Contacts.Phones.PERSON_ID,
+						Contacts.Phones.DISPLAY_NAME }, null, null,
 						null);
 				if (phoneCursor.moveToFirst()) {
 					return new ContactInfo(getPhoto(phoneCursor.getLong(1)),

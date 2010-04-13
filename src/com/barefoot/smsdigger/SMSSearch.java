@@ -58,7 +58,7 @@ public class SMSSearch extends Activity implements SMSConstants {
 
 	private String[] prepareSMSListingFrom(ArrayList<SMSHolder> smsList) {
     	int index = 0;
-    	String[] smsArray = new String[smsList.size()];
+    	String[] smsArray = new String[smsList.size() > 0 ? smsList.size() : 0];
     	for (SMSHolder eachSMS : smsList) {
     		smsArray[index++] = eachSMS.toJson();
     	}
