@@ -42,8 +42,8 @@ public class ContactDetails {
 		return new ContactInfo(null, phoneNumber);
 	}
 
-	private Bitmap getPhoto(Long photoId) {
-		Uri photoUri = Uri.withAppendedPath(Contacts.Photos.CONTENT_URI, Long.toString(photoId));
+	private Bitmap getPhoto(Long contactId) {
+		Uri photoUri = photoUri = Uri.withAppendedPath(Uri.withAppendedPath(Contacts.People.CONTENT_URI, Long.toString(contactId)),Contacts.Photos.CONTENT_DIRECTORY);
 
 	    Cursor cursor = contentResolver.query(photoUri, new String[] {Photos.DATA}, null, null, null);
 	    try {
