@@ -7,6 +7,7 @@ android:orientation="vertical"
 >
 	<EditText
 	android:id="@+id/keywordBox"
+	android:singleLine="true"
 	android:layout_width="fill_parent"
 	android:layout_height="wrap_content"
 	android:text="this"
