@@ -5,7 +5,7 @@
  * should not be modified by hand.
  */
 
-package com.barefoot.smsdigger;
+package com.barefoot.smsdigger.views;
 
 public final class R {
     public static final class attr {

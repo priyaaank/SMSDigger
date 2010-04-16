@@ -1,4 +1,4 @@
-package com.barefoot.smsdigger.parser;
+package com.barefoot.smsdigger.workers;
 
 public class TextParser {
 	

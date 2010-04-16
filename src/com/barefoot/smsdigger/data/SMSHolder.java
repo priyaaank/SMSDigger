@@ -1,14 +1,11 @@
-package com.barefoot.smsdigger.retrieve;
+package com.barefoot.smsdigger.data;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.barefoot.smsdigger.SMSConstants;
 
 import android.app.Activity;
 
-import com.google.gson.Gson;
 
-
-public class SMSHolder {
+public class SMSHolder implements SMSConstants {
 
 	private String id;
 
@@ -80,29 +77,12 @@ public class SMSHolder {
 		return smsString.toString();
 	}
 	
-	public String toJson() {
-		HashMap<String, Object> smsHolderMapRepresentation = new HashMap<String, Object>();
-		smsHolderMapRepresentation.put("id", Integer.valueOf(id));
-		smsHolderMapRepresentation.put("score", Integer.valueOf(score));
-		smsHolderMapRepresentation.put("contactId", contactId);
-		smsHolderMapRepresentation.put("message", message);
-		smsHolderMapRepresentation.put("sender", sender);
-		
-		return new Gson().toJson(smsHolderMapRepresentation);
-	}
-
-	public static SMSHolder createInstanceFrom(Map<String, String> fromJson) {
-		String id = (String)fromJson.get("id");
-		String score = (String)fromJson.get("score");
-		String msg = (String) fromJson.get("message");
-		String sender = null == fromJson.get("sender") ? null : (String)fromJson.get("sender");
-		String contact = null == fromJson.get("contact") ? null : (String)fromJson.get("contact");
-		
-		return new SMSHolder(id, msg, sender, contact, score);
+	public String getShortenedMessage() {
+		int length = getMessage().length() > MSG_LENGTH ? MSG_LENGTH : getMessage().length();
+		return (getMessage().substring(0, length) + "..."); 
 	}
 	
 	public ContactInfo getContactDetails(Activity activity) {
-		
 		if (contactInfo == null) {
 			contactInfo = new ContactDetails(activity.getContentResolver()).getContactInfoFrom(sender);
 		}

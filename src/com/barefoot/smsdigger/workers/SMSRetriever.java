@@ -1,4 +1,4 @@
-package com.barefoot.smsdigger.retrieve;
+package com.barefoot.smsdigger.workers;
 
 import java.util.ArrayList;
 
@@ -6,11 +6,11 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
-import com.barefoot.smsdigger.parser.TextParser;
+import com.barefoot.smsdigger.data.SMSHolder;
 
 public class SMSRetriever {
 
-	public static String SMS_URI = "content://sms/";
+	private static String SMS_URI = "content://sms/";
 
 	protected static String _ID = "_id";
 	protected static String THREAD_ID = "thread_id";
@@ -29,7 +29,7 @@ public class SMSRetriever {
 		this.textParser = parser;
 	}
 
-	public Uri getContentURI() {
+	protected Uri getContentURI() {
 		return Uri.parse(SMS_URI);
 	}
 
@@ -48,6 +48,10 @@ public class SMSRetriever {
 	protected String[] selectionArguments() {
 		return null;
 	}
+	
+	protected TextParser getTextParser() {
+		return textParser;
+	}
 
 	public ArrayList<SMSHolder> fetchMessages(ContentResolver contentResolver) {
 		Cursor messages = null;
@@ -62,7 +66,7 @@ public class SMSRetriever {
 			messages.close();
 		}
 
-		return null;
+		return new ArrayList<SMSHolder>();
 	}
 
 	protected ArrayList<SMSHolder> extractFieldsFrom(Cursor messages) {
@@ -89,7 +93,7 @@ public class SMSRetriever {
 	}
 
 	protected SMSHolder matches(String message) {
-		int matchScore = textParser.matchCountFor(message);
+		int matchScore = getTextParser().matchCountFor(message);
 		return matchScore == 0 ? null : new SMSHolder("0", message, null, null,
 				Integer.toString(matchScore));
 	}

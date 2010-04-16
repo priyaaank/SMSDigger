@@ -1,4 +1,4 @@
-package com.barefoot.smsdigger.retrieve;
+package com.barefoot.smsdigger.data;
 
 import android.graphics.Bitmap;
 
