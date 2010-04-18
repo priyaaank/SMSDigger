@@ -24,7 +24,7 @@ public class SMSView implements SMSConstants {
 	public Dialog dialog() {
 		customDialog.setContentView(R.layout.smsview);
 		
-		customDialog.setTitle(message.getContactDetails(activity).getContactName());
+		customDialog.setTitle(getTitleForMessage());
 		TextView text = (TextView) customDialog.findViewById(R.id.smsText);
 		text.setText(message.getMessage());
 		
@@ -38,5 +38,13 @@ public class SMSView implements SMSConstants {
 			imageView.setImageBitmap(message.getContactDetails(activity).getContactPhoto());			
 		}	
 		return customDialog;
+	}
+
+	private CharSequence getTitleForMessage() {
+		String title = activity.getString(message.getSourceFolder());	
+		if(message.getSourceFolder() != DRAFT) {
+			title = title + " "+ message.getContactDetails(activity).getContactName();
+		}
+		return title;
 	}
 }

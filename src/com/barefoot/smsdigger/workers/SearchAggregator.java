@@ -28,16 +28,16 @@ public class SearchAggregator extends SMSRetriever implements SMSConstants {
 	
 	public ArrayList<SMSHolder> fetchInboxMessages() {
 		currentURI = INBOX_URI;
-		return fetchMessages(contentResolver);
+		return fetchMessages(contentResolver, INBOX);
 	}
 
 	public ArrayList<SMSHolder> fetchSentMessages() {
 		currentURI = SENT_URI;
-		return fetchMessages(contentResolver);
+		return fetchMessages(contentResolver, SENT);
 	}
 	
 	public ArrayList<SMSHolder> fetchDraftMessages() {
 		currentURI = DRAFT_URI;
-		return fetchMessages(contentResolver);
+		return fetchMessages(contentResolver, DRAFT);
 	}
 }

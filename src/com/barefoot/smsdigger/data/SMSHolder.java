@@ -19,12 +19,16 @@ public class SMSHolder implements SMSConstants {
 	
 	private ContactInfo contactInfo;
 	
-	public SMSHolder(String id, String message, String sender, String contactId, String score) {
+	private int sourceFolder;
+	
+
+	public SMSHolder(String id, String message, String sender, String contactId, String score, int sourceFolder) {
 		this.id = id;
 		this.message = message;
 		this.sender = sender;
 		this.contactId = contactId;
 		this.score = score;
+		this.sourceFolder = sourceFolder;
 	}
 	
 	public String getId() {
@@ -33,6 +37,14 @@ public class SMSHolder implements SMSConstants {
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public int getSourceFolder() {
+		return sourceFolder;
+	}
+	
+	public void setSourceFolder(int sourceFolder) {
+		this.sourceFolder = sourceFolder;
 	}
 
 	public String getMessage() {

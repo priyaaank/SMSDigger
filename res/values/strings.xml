@@ -2,4 +2,7 @@
 <resources>
     <string name="hello">Hello World, SMSDigger!</string>
     <string name="app_name">SMSDigger</string>
+    <string name="received_title">Received from</string>
+    <string name="sent_title">Sent to</string>
+    <string name="draft_title">In Drafts</string>
 </resources>

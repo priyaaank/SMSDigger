@@ -6,9 +6,10 @@ import android.content.ContentResolver;
 import android.database.Cursor;
 import android.net.Uri;
 
+import com.barefoot.smsdigger.SMSConstants;
 import com.barefoot.smsdigger.data.SMSHolder;
 
-public class SMSRetriever {
+public class SMSRetriever implements SMSConstants {
 
 	private static String SMS_URI = "content://sms/";
 
@@ -53,14 +54,14 @@ public class SMSRetriever {
 		return textParser;
 	}
 
-	public ArrayList<SMSHolder> fetchMessages(ContentResolver contentResolver) {
+	public ArrayList<SMSHolder> fetchMessages(ContentResolver contentResolver, int messageSource) {
 		Cursor messages = null;
 		try {
 			messages = contentResolver.query(getContentURI(), fieldsToFetch(),
 					whereClause(), selectionArguments(), sortOrder());
 
 			if (messages != null && messages.moveToFirst()) {
-				return extractFieldsFrom(messages);
+				return extractFieldsFrom(messages, messageSource);
 			}
 		} finally {
 			messages.close();
@@ -69,7 +70,7 @@ public class SMSRetriever {
 		return new ArrayList<SMSHolder>();
 	}
 
-	protected ArrayList<SMSHolder> extractFieldsFrom(Cursor messages) {
+	protected ArrayList<SMSHolder> extractFieldsFrom(Cursor messages, int sourceFolder) {
 		int idIndex = messages.getColumnIndex(_ID);
 		int bodyIndex = messages.getColumnIndex(BODY);
 		int senderIndex = messages.getColumnIndex(ADDRESS);
@@ -85,6 +86,7 @@ public class SMSRetriever {
 				matchingMessage.setSender(messages.getString(senderIndex));
 				matchingMessage
 						.setContactId(messages.getString(contactIdIndex));
+				matchingMessage.setSourceFolder(sourceFolder);
 				smsHolders.add(matchingMessage);
 			}
 		} while (messages.moveToNext());
@@ -95,6 +97,6 @@ public class SMSRetriever {
 	protected SMSHolder matches(String message) {
 		int matchScore = getTextParser().matchCountFor(message);
 		return matchScore == 0 ? null : new SMSHolder("0", message, null, null,
-				Integer.toString(matchScore));
+				Integer.toString(matchScore), INBOX);
 	}
 }
