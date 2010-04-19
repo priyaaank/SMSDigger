@@ -23,7 +23,6 @@ public class Listing extends ListActivity implements SMSConstants {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.listing);
         setup();
-        fetchMessages();
         updateListingContentsWith();
 	}
 	
@@ -40,17 +39,11 @@ public class Listing extends ListActivity implements SMSConstants {
 		setListAdapter(messageListAdapter);
 	}
 
-	private void fetchMessages() {
-		if(null != aggregator) {
-			messages.addAll(aggregator.fetchInboxMessages());
-			messages.addAll(aggregator.fetchSentMessages());
-			messages.addAll(aggregator.fetchDraftMessages());
-		}
-	}
-
 	private void setup() {
 		String[] keywords = getIntent().getStringArrayExtra(KEYWORDS);
-		aggregator = new SearchAggregator(keywords, getContentResolver());
+		int sourceValueCombination = getIntent().getIntExtra(SRC_VALUE_CODE, 1);
+		aggregator = new SearchAggregator(keywords, getContentResolver(), sourceValueCombination);
+		messages.addAll(aggregator.fetchMessagesFromSourcesHaving());
 	}
 	
 	private String[] getShortenedMessageList() {

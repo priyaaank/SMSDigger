@@ -11,5 +11,6 @@ public interface SMSConstants {
 	public static final int INBOX = R.string.received_title;
 	public static final int SENT = R.string.sent_title;
 	public static final int DRAFT = R.string.draft_title;
+	public static final String SRC_VALUE_CODE = "src_value_code";
 	
 }
