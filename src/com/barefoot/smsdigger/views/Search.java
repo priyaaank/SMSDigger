@@ -41,26 +41,24 @@ public class Search extends Activity implements SMSConstants {
 	private void createNewActivityToListMessagesFrom(String[] keywords){
     	Intent listingActivity = new Intent(Search.this, Listing.class);
     	listingActivity.putExtra(KEYWORDS, keywords);
-    	listingActivity.putExtra(SRC_VALUE_CODE, getSourceSelectionCode());
+    	listingActivity.putExtra(INBOX_FETCH, inboxSelected());
+    	listingActivity.putExtra(SENT_FETCH, sentSelected());
+    	listingActivity.putExtra(DRAFT_FETCH, draftSelected());
     	startActivity(listingActivity);
     }
 	
-	private int getSourceSelectionCode() {
-		int sourceSelectionCode = 0;
+	private boolean inboxSelected() {
 		CheckBox inboxCheck = (CheckBox)findViewById(R.id.inboxCheck);
+		return inboxCheck.isChecked();
+	}
+
+	private boolean sentSelected() {
 		CheckBox sentCheck = (CheckBox)findViewById(R.id.sentCheck);
+		return sentCheck.isChecked();
+	}
+	
+	private boolean draftSelected() {
 		CheckBox draftCheck = (CheckBox)findViewById(R.id.draftCheck);
-		
-		if(inboxCheck.isChecked()) {
-			sourceSelectionCode = sourceSelectionCode + 1;
-		}
-		if(draftCheck.isChecked()) {
-			sourceSelectionCode = sourceSelectionCode + 3;
-		}
-		if(sentCheck.isChecked()) {
-			sourceSelectionCode = sourceSelectionCode + 5;
-		}
-		
-		return sourceSelectionCode > 0 ? sourceSelectionCode : 1;
+		return draftCheck.isChecked();
 	}
 }

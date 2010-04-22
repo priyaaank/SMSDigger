@@ -41,9 +41,11 @@ public class Listing extends ListActivity implements SMSConstants {
 
 	private void setup() {
 		String[] keywords = getIntent().getStringArrayExtra(KEYWORDS);
-		int sourceValueCombination = getIntent().getIntExtra(SRC_VALUE_CODE, 1);
-		aggregator = new SearchAggregator(keywords, getContentResolver(), sourceValueCombination);
-		messages.addAll(aggregator.fetchMessagesFromSourcesHaving());
+		boolean inboxFetch = getIntent().getBooleanExtra(INBOX_FETCH, true);
+		boolean sentFetch = getIntent().getBooleanExtra(SENT_FETCH, false);
+		boolean draftFetch = getIntent().getBooleanExtra(DRAFT_FETCH, false);
+		aggregator = new SearchAggregator(keywords, getContentResolver(), inboxFetch, sentFetch, draftFetch);
+		messages.addAll(aggregator.fetchMessagesFromSources());
 	}
 	
 	private String[] getShortenedMessageList() {
@@ -54,5 +56,35 @@ public class Listing extends ListActivity implements SMSConstants {
 		}
 		return messageList;
 	}
-
+	
 }
+
+/*class MyAdapter<T> extends ArrayAdapter<T> {
+	
+	private String[] obj = null;
+
+	public MyAdapter(Context context, int textViewResourceId) {
+		super(context, textViewResourceId);
+	}
+
+	public MyAdapter(Context context, int textViewResourceId, T[] objects) {
+		super(context, textViewResourceId, objects);
+		obj = (String[])objects;
+	}
+	
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View v = convertView;
+        if (v == null) {
+            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            v = vi.inflate(R.layout.sms, null);
+        }
+        
+        TextView t = (TextView) v;
+		t.setText(obj[position]);
+		
+		Log.d("Called get view ", " the position pass is " + position + "");
+		return v;
+	}
+	
+}*/

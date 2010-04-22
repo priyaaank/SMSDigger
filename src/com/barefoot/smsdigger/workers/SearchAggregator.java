@@ -16,17 +16,22 @@ public class SearchAggregator extends SMSRetriever implements SMSConstants {
 
 	private String currentURI = "content://sms/";
 	private ContentResolver contentResolver = null;
-	private int sourceValueCombination = 1;
+	private boolean inbox_fetch = true;
+	private boolean sent_fetch = false;
+	private boolean draft_fetch = false;
 
 	protected Uri getContentURI() {
 		return Uri.parse(currentURI);
 	}
 
 	public SearchAggregator(final String[] keywords,
-			final ContentResolver contentResolver, final int sourceValueCombination) {
+			final ContentResolver contentResolver, final boolean inboxFetch,
+			final boolean sentFetch, final boolean draftFetch) {
 		super(keywords);
 		this.contentResolver = contentResolver;
-		this.sourceValueCombination = sourceValueCombination == 0 ? 1 : sourceValueCombination;
+		this.sent_fetch = sentFetch;
+		this.inbox_fetch = inboxFetch;
+		this.draft_fetch = draftFetch;
 	}
 
 	public ArrayList<SMSHolder> fetchInboxMessages() {
@@ -44,36 +49,16 @@ public class SearchAggregator extends SMSRetriever implements SMSConstants {
 		return fetchMessages(contentResolver, DRAFT);
 	}
 
-	public ArrayList<SMSHolder> fetchMessagesFromSourcesHaving() {
+	public ArrayList<SMSHolder> fetchMessagesFromSources() {
 		ArrayList<SMSHolder> messages = new ArrayList<SMSHolder>();
-		switch(sourceValueCombination) {
-		case 1:
+
+		if (inbox_fetch)
 			messages.addAll(fetchInboxMessages());
-			break;
-		case 3:
-			messages.addAll(fetchDraftMessages());
-			break;
-		case 4: 
-			messages.addAll(fetchInboxMessages());
-			messages.addAll(fetchDraftMessages());
-			break;
-		case 5:
+		if (sent_fetch)
 			messages.addAll(fetchSentMessages());
-			break;
-		case 6:
-			messages.addAll(fetchInboxMessages());
-			messages.addAll(fetchSentMessages());
-			break;
-		case 8:
-			messages.addAll(fetchSentMessages());
+		if (draft_fetch)
 			messages.addAll(fetchDraftMessages());
-			break;
-		case 9:
-			messages.addAll(fetchInboxMessages());
-			messages.addAll(fetchSentMessages());
-			messages.addAll(fetchDraftMessages());
-			break;
-		}
+
 		return messages;
 	}
 }
