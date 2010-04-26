@@ -3,6 +3,8 @@ package com.barefoot.smsdigger.views;
 import java.util.ArrayList;
 
 import android.app.ListActivity;
+import android.app.ProgressDialog;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -45,7 +47,7 @@ public class Listing extends ListActivity implements SMSConstants {
 		boolean sentFetch = getIntent().getBooleanExtra(SENT_FETCH, false);
 		boolean draftFetch = getIntent().getBooleanExtra(DRAFT_FETCH, false);
 		aggregator = new SearchAggregator(keywords, getContentResolver(), inboxFetch, sentFetch, draftFetch);
-		messages.addAll(aggregator.fetchMessagesFromSources());
+		new MessageFetchAsyncTask().execute();
 	}
 	
 	private String[] getShortenedMessageList() {
@@ -55,36 +57,32 @@ public class Listing extends ListActivity implements SMSConstants {
 			messageList[index++] = eachMessage.getShortenedMessage();
 		}
 		return messageList;
-	}
+	}	
 	
-}
-
-/*class MyAdapter<T> extends ArrayAdapter<T> {
 	
-	private String[] obj = null;
+	private class MessageFetchAsyncTask extends AsyncTask<Void, Void, ArrayList<SMSHolder>> {
+		private final ProgressDialog dialog = new ProgressDialog(Listing.this);
 
-	public MyAdapter(Context context, int textViewResourceId) {
-		super(context, textViewResourceId);
-	}
-
-	public MyAdapter(Context context, int textViewResourceId, T[] objects) {
-		super(context, textViewResourceId, objects);
-		obj = (String[])objects;
-	}
-	
-	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
-		View v = convertView;
-        if (v == null) {
-            LayoutInflater vi = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            v = vi.inflate(R.layout.sms, null);
-        }
-        
-        TextView t = (TextView) v;
-		t.setText(obj[position]);
+		@Override
+		protected void onPreExecute() {
+			this.dialog.setMessage("Searching...");
+			this.dialog.show();
+		}
 		
-		Log.d("Called get view ", " the position pass is " + position + "");
-		return v;
+		@Override
+		protected ArrayList<SMSHolder> doInBackground(Void... params) {
+			return Listing.this.aggregator.fetchMessagesFromSources();
+		}
+		
+		@Override
+		protected void onPostExecute(ArrayList<SMSHolder> result) {
+			
+			Listing.this.messages.addAll(result);
+			Listing.this.updateListingContentsWith();
+
+			if (this.dialog.isShowing()) {
+				this.dialog.dismiss();
+			}
+		}
 	}
-	
-}*/
+}
