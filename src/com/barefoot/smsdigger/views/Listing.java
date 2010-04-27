@@ -8,7 +8,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import com.barefoot.smsdigger.SMSConstants;
@@ -19,13 +18,13 @@ public class Listing extends ListActivity implements SMSConstants {
 
 	private SearchAggregator aggregator;
 	private ArrayList<SMSHolder> messages = new ArrayList<SMSHolder>();
+	private ArrayAdapter<String> messageListAdapter = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
         setContentView(R.layout.listing);
-        setup();
-        updateListingContentsWith();
+        fetch();
 	}
 	
 	@Override
@@ -37,11 +36,11 @@ public class Listing extends ListActivity implements SMSConstants {
 	}
 	
 	private void updateListingContentsWith() {
-		ListAdapter messageListAdapter = new ArrayAdapter<String>(this, R.layout.sms, getShortenedMessageList());
+		messageListAdapter = new ArrayAdapter<String>(this, R.layout.sms, getShortenedMessageList());
 		setListAdapter(messageListAdapter);
 	}
 
-	private void setup() {
+	private void fetch() {
 		String[] keywords = getIntent().getStringArrayExtra(KEYWORDS);
 		boolean inboxFetch = getIntent().getBooleanExtra(INBOX_FETCH, true);
 		boolean sentFetch = getIntent().getBooleanExtra(SENT_FETCH, false);
@@ -58,7 +57,6 @@ public class Listing extends ListActivity implements SMSConstants {
 		}
 		return messageList;
 	}	
-	
 	
 	private class MessageFetchAsyncTask extends AsyncTask<Void, Void, ArrayList<SMSHolder>> {
 		private final ProgressDialog dialog = new ProgressDialog(Listing.this);
