@@ -2,12 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
       package="com.barefoot.smsdigger.views"
       android:versionCode="1"
-      android:versionName="1.0">
+      android:versionName="1.0.0">
     
     <instrumentation android:name="android.test.InstrumentationTestRunner" android:targetPackage="com.barefoot.smsdigger.views" android:label="SearchTest" />
    	<uses-library android:name="android.test.runner" />
    	 
-    <application android:icon="@drawable/icon" android:label="@string/app_name">
+    <application android:icon="@drawable/smsdigger" android:label="@string/app_name">
         <activity android:name=".Search"
                   android:label="@string/app_name">
             <intent-filter>

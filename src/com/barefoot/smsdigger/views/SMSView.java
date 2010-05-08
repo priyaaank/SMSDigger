@@ -31,7 +31,7 @@ public class SMSView implements SMSConstants {
 		ImageView imageView = (ImageView) customDialog.findViewById(R.id.smsImage);
 		if(message.getContactDetails(activity).getContactPhoto() == null )
 		{
-			imageView.setImageResource(R.drawable.icon);
+			imageView.setImageResource(R.drawable.user);
 		}
 		else
 		{
